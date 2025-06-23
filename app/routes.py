@@ -308,14 +308,29 @@ def analyze_cv(text, job_field):
 def index():
     try:
         import os
-        print(f"Current directory: {os.getcwd()}", file=sys.stderr)
-        print(f"Directory contents: {os.listdir()}", file=sys.stderr)
-        print(f"App directory contents: {os.listdir('app')}", file=sys.stderr)
-        print(f"Templates directory contents: {os.listdir('app/templates')}", file=sys.stderr)
+        current_dir = os.getcwd()
+        print(f"Current directory: {current_dir}", file=sys.stderr)
+        print(f"Directory contents: {os.listdir(current_dir)}", file=sys.stderr)
+        
+        # Mutlak yolları kullan
+        app_dir = os.path.join(current_dir, 'app')
+        templates_dir = os.path.join(app_dir, 'templates')
+        
+        if os.path.exists(app_dir):
+            print(f"App directory contents: {os.listdir(app_dir)}", file=sys.stderr)
+        else:
+            print(f"App directory not found at: {app_dir}", file=sys.stderr)
+            
+        if os.path.exists(templates_dir):
+            print(f"Templates directory contents: {os.listdir(templates_dir)}", file=sys.stderr)
+        else:
+            print(f"Templates directory not found at: {templates_dir}", file=sys.stderr)
+            
         return render_template('index.html')
     except Exception as e:
-        print(f"Error in index(): {str(e)}\n{traceback.format_exc()}", file=sys.stderr)
-        return f"Error: {str(e)}", 500
+        error_msg = f"Error in index(): {str(e)}\n{traceback.format_exc()}"
+        print(error_msg, file=sys.stderr)
+        return error_msg, 500
 
 @main.route('/analyze', methods=['POST'])
 def analyze():

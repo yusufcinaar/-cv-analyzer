@@ -4,10 +4,13 @@ services:
     env: python
     buildCommand: |
       pip install -r requirements.txt
-      mkdir -p /opt/render/project/src/app/templates
-      mkdir -p /opt/render/project/src/app/static
-      cp -r app/templates/* /opt/render/project/src/app/templates/
-      cp -r app/static/* /opt/render/project/src/app/static/
+      ls -la
+      pwd
+      ls -la app/
+      echo "Creating directories..."
+      mkdir -p app/templates
+      mkdir -p app/static
+      ls -la app/
     startCommand: python -m gunicorn wsgi:app
     envVars:
       - key: PYTHON_VERSION
