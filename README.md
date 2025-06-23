@@ -34,7 +34,7 @@ CV'nizi iş alanınıza göre analiz eden, gelişim önerileri sunan ve ATS (App
 
 ```bash
 # Repo'yu klonlayın
-git clone https://github.com/YOUR_USERNAME/cv-analyzer.git
+git clone https://github.com/yusufcinaar/-cv-analyzer.git
 
 # Proje klasörüne girin
 cd cv-analyzer
@@ -64,7 +64,7 @@ MIT License - Detaylar için [LICENSE](LICENSE) dosyasına bakın
 
 ---
 
-💬 Sorularınız veya geri bildirimleriniz için [Issues](https://github.com/YOUR_USERNAME/cv-analyzer/issues) bölümünü kullanabilirsiniz.
+💬 Sorularınız veya geri bildirimleriniz için [Issues](https://github.com/yusufcinaar/-cv-analyzer/issues) bölümünü kullanabilirsiniz.
 
 Bu proje, kullanıcıların PDF formatındaki CV'lerini yapay zeka destekli olarak analiz eden bir web uygulamasıdır.
 
