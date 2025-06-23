@@ -1,25 +1,13 @@
 import streamlit as st
 import fitz  # PyMuPDF
-import re
-import tempfile
-import os
 import spacy
+import re
 from pathlib import Path
 
-# Sayfa yapılandırması
-st.set_page_config(
-    page_title="CV Analiz Sistemi",
-    page_icon="📝",
-    layout="centered"
-)
-
-# Başlık ve açıklama
-st.title("📝 CV Analiz Sistemi")
-st.markdown("""
-💼 **ATS Uyumlu CV Değerlendirme Aracı**
-
-CV'nizi yükleyin, iş alanınızı seçin ve detaylı bir analiz raporu alın!
-""")
+# Sayfa başlığı ve açıklama
+st.set_page_config(page_title="CV Analiz Sistemi", layout="wide")
+st.title("CV Analiz Sistemi")
+st.write("CV'nizi yükleyin ve yapay zeka destekli analizini alın.")
 
 # SpaCy modelini yükle
 @st.cache_resource
@@ -28,32 +16,19 @@ def load_model():
 
 nlp = load_model()
 
-def pdf_to_text(file):
+def pdf_to_text(pdf_file):
     """PDF dosyasını metne çevirir"""
+    text = ""
     try:
-        # Geçici dosya oluştur
-        with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
-            tmp_file.write(file.getvalue())
-            tmp_path = tmp_file.name
-
-        # PDF'i aç
-        pdf_document = fitz.open(tmp_path)
-        
-        # Tüm sayfaları birleştir
-        text = ""
+        pdf_document = fitz.open(stream=pdf_file.read(), filetype="pdf")
         for page in pdf_document:
             text += page.get_text()
-        
-        # Geçici dosyayı sil
-        pdf_document.close()
-        os.unlink(tmp_path)
-        
         return text
     except Exception as e:
         st.error(f"PDF okuma hatası: {str(e)}")
         return None
 
-def analyze_cv(text, job_field):
+def analyze_cv(text):
     """CV metnini analiz eder ve eksikleri belirler"""
     doc = nlp(text)
     analysis = {
@@ -170,36 +145,17 @@ def display_analysis(analysis):
         else:
             st.write("✅ CV'niz temel gereksinimleri karşılıyor!")
 
-def main():
-    # İş alanı seçimi
-    job_field = st.selectbox(
-        "CV'nizi Değerlendirmek İstediğiniz İş Alanı",
-        ['software', 'data-science', 'marketing', 'design', 'management'],
-        format_func=lambda x: {
-            'software': '💻 Yazılım Geliştirme',
-            'data-science': '📈 Veri Bilimi',
-            'marketing': '💳 Pazarlama',
-            'design': '🎨 Tasarım',
-            'management': '💼 Yönetim'
-        }[x]
-    )
+# Ana uygulama akışı
+uploaded_file = st.file_uploader("CV'nizi PDF formatında yükleyin", type="pdf")
 
-    # PDF yükleme
-    uploaded_file = st.file_uploader("CV'nizi PDF formatında yükleyin", type="pdf")
-
-    if uploaded_file is not None:
-        with st.spinner('CV analiz ediliyor...'):
-            # PDF'i metne çevir
-            cv_text = pdf_to_text(uploaded_file)
+if uploaded_file is not None:
+    with st.spinner('CV analiz ediliyor...'):
+        # PDF'i metne çevir
+        cv_text = pdf_to_text(uploaded_file)
+        
+        if cv_text:
+            # CV'yi analiz et
+            analysis_results = analyze_cv(cv_text)
             
-            if cv_text:
-                # CV'yi analiz et
-                analysis_results = analyze_cv(cv_text, job_field)
-                
-                # Sonuçları göster
-                display_analysis(analysis_results)
-            else:
-                st.error("PDF dosyası okunamadı. Lütfen başka bir dosya deneyin.")
-
-if __name__ == '__main__':
-    main()
+            # Sonuçları göster
+            display_analysis(analysis_results)

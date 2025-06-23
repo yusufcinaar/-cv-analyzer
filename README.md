@@ -64,36 +64,7 @@ Yusuf ÇINAR - [LinkedIn Profili](https://www.linkedin.com/in/yusuf-%C3%A7%C4%B1
 
 ---
 
-💬 Sorularınız veya geri bildirimleriniz için [Issues](https://github.com/yusufcinaar/-cv-analyzer/issues) bölümünü kullanabilirsiniz.
-
-Bu proje, kullanıcıların PDF formatındaki CV'lerini yapay zeka destekli olarak analiz eden bir web uygulamasıdır.
-
-## Özellikler
-
-- PDF CV yükleme ve okuma
-- Temel CV bileşenlerinin analizi:
-  - İletişim bilgileri kontrolü
-  - Eğitim bilgileri kontrolü
-  - İş deneyimi kontrolü
-  - Teknik becerilerin tespiti
-  - Dil becerilerinin kontrolü
-- Eksik veya geliştirilmesi gereken alanlar için öneriler
-- Kullanıcı dostu arayüz
-
-## Kurulum
-
-1. Gerekli Python paketlerini yükleyin:
-```bash
-pip install -r requirements.txt
-```
-
-2. Türkçe SpaCy modelini yükleyin:
-```bash
-python -m spacy download tr_core_news_lg
-```
-
-3. Uygulamayı çalıştırın:
-```bash
+Sorularınız veya geri bildirimleriniz için [Issues](https://github.com/yusufcinaar/-cv-analyzer/issues) bölümünü kullanabilirsiniz.
 streamlit run app.py
 ```
 

@@ -312,20 +312,15 @@ def index():
         print(f"Current directory: {current_dir}", file=sys.stderr)
         print(f"Directory contents: {os.listdir(current_dir)}", file=sys.stderr)
         
-        # Mutlak yolları kullan
-        app_dir = os.path.join(current_dir, 'app')
-        templates_dir = os.path.join(app_dir, 'templates')
+        if os.path.exists(template_dir):
+            print(f"Templates directory exists and contains: {os.listdir(template_dir)}", file=sys.stderr)
+            if os.path.exists(os.path.join(template_dir, 'index.html')):
+                print("index.html exists in templates directory", file=sys.stderr)
+            else:
+                print("index.html NOT found in templates directory", file=sys.stderr)
+        else:
+            print("Templates directory does not exist!", file=sys.stderr)
         
-        if os.path.exists(app_dir):
-            print(f"App directory contents: {os.listdir(app_dir)}", file=sys.stderr)
-        else:
-            print(f"App directory not found at: {app_dir}", file=sys.stderr)
-            
-        if os.path.exists(templates_dir):
-            print(f"Templates directory contents: {os.listdir(templates_dir)}", file=sys.stderr)
-        else:
-            print(f"Templates directory not found at: {templates_dir}", file=sys.stderr)
-            
         return render_template('index.html')
     except Exception as e:
         error_msg = f"Error in index(): {str(e)}\n{traceback.format_exc()}"
