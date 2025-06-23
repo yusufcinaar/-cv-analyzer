@@ -60,7 +60,7 @@ MIT License - Detaylar için [LICENSE](LICENSE) dosyasına bakın
 
 ## 👨‍💻 Geliştirici
 
-[Adınız] - [LinkedIn Profiliniz](LINKEDIN_URL)
+Yusuf ÇINAR - [LinkedIn Profili](https://www.linkedin.com/in/yusuf-%C3%A7%C4%B1nar-b51684229/)
 
 ---
 
