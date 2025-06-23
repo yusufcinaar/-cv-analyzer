@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, request, jsonify
-import fitz
+import pdfplumber
 import re
 from pathlib import Path
 import os
+import io
 
 main = Blueprint('main', __name__)
 
@@ -10,9 +11,10 @@ def pdf_to_text(pdf_file):
     """PDF dosyasını metne çevirir"""
     text = ""
     try:
-        pdf_document = fitz.open(stream=pdf_file.read(), filetype="pdf")
-        for page in pdf_document:
-            text += page.get_text()
+        pdf_content = io.BytesIO(pdf_file.read())
+        with pdfplumber.open(pdf_content) as pdf:
+            for page in pdf.pages:
+                text += page.extract_text() or ""
         return text
     except Exception as e:
         return None
