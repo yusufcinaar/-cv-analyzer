@@ -10,9 +10,6 @@ CV'nizi iş alanınıza göre analiz eden, gelişim önerileri sunan ve ATS (App
 - 📝 CV yazma önerileri
 - 💡 Pratik ipucu ve proje önerileri
 
-## 💻 Canlı Demo
-
-[Canlı Demo'yu Deneyin](DEMO_URL) → Kendi CV'nizi yükleyip analiz edebilirsiniz!
 
 ## 🛠️ Teknolojiler
 
