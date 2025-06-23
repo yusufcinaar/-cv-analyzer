@@ -306,7 +306,16 @@ def analyze_cv(text, job_field):
 
 @main.route('/')
 def index():
-    return render_template('index.html')
+    try:
+        import os
+        print(f"Current directory: {os.getcwd()}", file=sys.stderr)
+        print(f"Directory contents: {os.listdir()}", file=sys.stderr)
+        print(f"App directory contents: {os.listdir('app')}", file=sys.stderr)
+        print(f"Templates directory contents: {os.listdir('app/templates')}", file=sys.stderr)
+        return render_template('index.html')
+    except Exception as e:
+        print(f"Error in index(): {str(e)}\n{traceback.format_exc()}", file=sys.stderr)
+        return f"Error: {str(e)}", 500
 
 @main.route('/analyze', methods=['POST'])
 def analyze():
