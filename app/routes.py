@@ -4,6 +4,8 @@ import re
 from pathlib import Path
 import os
 import io
+import traceback
+import sys
 
 main = Blueprint('main', __name__)
 
@@ -308,24 +310,31 @@ def index():
 
 @main.route('/analyze', methods=['POST'])
 def analyze():
-    job_field = request.form.get('job_field', 'software')
-    if 'file' not in request.files:
-        return jsonify({'error': 'Dosya yüklenmedi'}), 400
-    
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({'error': 'Dosya seçilmedi'}), 400
-    
-    if not file.filename.endswith('.pdf'):
-        return jsonify({'error': 'Sadece PDF dosyaları kabul edilmektedir'}), 400
+    try:
+        job_field = request.form.get('job_field', 'software')
+        if 'file' not in request.files:
+            return jsonify({'error': 'Dosya yüklenmedi'}), 400
+        
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'Dosya seçilmedi'}), 400
+        
+        if not file.filename.endswith('.pdf'):
+            return jsonify({'error': 'Sadece PDF dosyaları kabul edilmektedir'}), 400
 
-    cv_text = pdf_to_text(file)
-    if not cv_text:
-        return jsonify({'error': 'PDF dosyası okunamadı'}), 400
+        cv_text = pdf_to_text(file)
+        if not cv_text:
+            return jsonify({'error': 'PDF dosyası okunamadı'}), 400
 
-    analysis_results = analyze_cv(cv_text, job_field)
-    # CV skorunu hesapla
-    cv_score = calculate_cv_score(analysis_results)
-    analysis_results["cv_score"] = cv_score
-    
-    return jsonify(analysis_results)
+        print(f"CV Text: {cv_text[:500]}", file=sys.stderr)  # İlk 500 karakteri logla
+
+        analysis_results = analyze_cv(cv_text, job_field)
+        # CV skorunu hesapla
+        cv_score = calculate_cv_score(analysis_results)
+        analysis_results["cv_score"] = cv_score
+        
+        return jsonify(analysis_results)
+    except Exception as e:
+        error_msg = f"Error in analyze(): {str(e)}\n{traceback.format_exc()}"
+        print(error_msg, file=sys.stderr)
+        return jsonify({'error': 'Bir hata oluştu: ' + str(e)}), 500
