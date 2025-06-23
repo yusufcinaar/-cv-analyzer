@@ -2,7 +2,9 @@ services:
   - type: web
     name: cv-analyzer
     env: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: |
+      apt-get update && apt-get install -y libmupdf-dev
+      pip install -r requirements.txt
     startCommand: python -m gunicorn wsgi:app
     envVars:
       - key: PYTHON_VERSION
