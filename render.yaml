@@ -5,15 +5,15 @@ services:
     buildCommand: |
       pip install -r requirements.txt
       echo "Current directory:" && pwd
-      echo "\nSource directory structure:" && ls -la /opt/render/project/src
-      echo "\nSource app directory:" && ls -la /opt/render/project/src/app
-      echo "\nSource templates directory:" && ls -la /opt/render/project/src/app/templates
-      echo "\nCreating target directories..."
-      rm -rf /opt/render/project/src/.venv/lib/python3.13/site-packages/flask/templates
-      mkdir -p /opt/render/project/src/.venv/lib/python3.13/site-packages/flask/templates
-      cp -r /opt/render/project/src/app/templates/* /opt/render/project/src/.venv/lib/python3.13/site-packages/flask/templates/
-      echo "\nTarget templates directory:" && ls -la /opt/render/project/src/.venv/lib/python3.13/site-packages/flask/templates
-    startCommand: python -m gunicorn wsgi:app
+      echo "\nProject structure:" && ls -R /opt/render/project/src
+      echo "\nMoving to project directory..."
+      cd /opt/render/project/src
+      echo "\nCreating symbolic links..."
+      ln -sf app/templates templates
+      ln -sf app/static static
+      echo "\nFinal structure:" && ls -la
+    startCommand: |
+      cd /opt/render/project/src && python -m gunicorn wsgi:app
     envVars:
       - key: PYTHON_VERSION
         value: 3.9.0
